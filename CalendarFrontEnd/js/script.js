@@ -1,72 +1,89 @@
-const app = document.getElementById('calendar');
-const container = document.createElement('div');
-container.setAttribute('class', 'container');
-app.appendChild(container);
+const app = document.getElementById('main');
 
 // API Calls
-
-var request = new XMLHttpRequest();
-var url = 'http://localhost:3001/api/v1/events/' ;
-
-// GET
-
-request.open('GET', url , true);
-request.onload = function () {
-  var data = JSON.parse(this.response);
-  console.log(data);
-  if (request.status >= 200 && request.status < 400) {
-    data.forEach(event => {
-      const events = document.getElementById('events');
-      const h5 = document.createElement('h5');
-      h5.textContent = event.title;
-
-      const p = document.createElement('p');
-      p.textContent = event.description;
-
-      
-
-      const span = document.createElement('span');
-      let sTime = moment(event.start_time).format('hh:mm A'),
-          eTime = moment(event.end_time).format('hh:mm A'),
-          eDate = moment(event.start_time).format('dddd MM YYYY');
-      span.textContent = `${sTime + "-" + eTime}`;
-      
-      const em = document.createElement('em');
-      em.textContent = eDate;
-      
-      
-      
-      events.appendChild(h5);
-      events.appendChild(p);
-      h5.appendChild(span);
-      h5.appendChild(em);
+axios.get('http://localhost:3001/api/v1/events/')
+  .then(function(request){
+    // console.log(request.data); 
+    // console.log(request.status); 
+  var data = request.data;
+    if (request.status >= 200 && request.status < 400) {
+      data.forEach(event => {
     
-    });
-  } else {
-    console.log('error');
-  }
-}
+        const events = document.getElementById('events'),
+              time = document.getElementById('time') ;
+        
+        const item = document.createElement('li'),
+              title = document.createElement('h5'),
+              desc = document.createElement('p'),
+              span = document.createElement('span');
+              
+        let sTime = moment(event.start_time).format('hh:mm A'),
+            eTime = moment(event.end_time).format('hh:mm A'),
+            eDate = moment(event.created_at).format('dddd MM YYYY');
+        
+        item.setAttribute('class', 'list-group-item');
+        title.textContent = event.title;
+        desc.textContent = event.description;
+        span.textContent = `${sTime + "-" + eTime}`;
+        
+        const date = document.createElement('em');
+        date.textContent = eDate;
+        
+        title.innerHTML+= span.outerHTML;
+        item.innerHTML+= title.outerHTML + date.outerHTML + desc.outerHTML;
+        events.appendChild(item);  
+      });
+    } else {
+        const errorMessage = document.createElement('error')
+        errorMessage.textContent = `It's not working`;
+        main.appendChild(errorMessage);
+      }
+  }); 
+ // POST
 
-request.send();
+// var form = document.getElementById('events');
+// var formData = new FormData(form);
+// function submitData(){
+//   const title = document.getElementById('title').value,
+//         description = document.getElementById('description').value,
+//         start_time = document.getElementById('start_time').value,
+//         end_time = document.getElementById('end_time').value;
 
-// POST
+// axios.get('http://localhost:3001/api/v1/events/', {
+//     title: title,
+//     description: description,
+//     start_time: start_time,
+//     end_time: end_time
+//   })
+  
+//   .then(function (response) {
+//       //handle success
+//       console.log(response);
+//   })
+//   .catch(function (response) {
+//       //handle error
+//       console.log(response);
+//   });
+// }
 
-var form = document.getElementById('events');
-var formData = new FormData(form);
+// const title = document.getElementById('title').value,
+//         description = document.getElementById('description').value,
+//         start_time = document.getElementById('start_time').value,
+//         end_time = document.getElementById('end_time').value;
 
-request.open('POST', url, true);
-
-//Send the proper header information along with the request
-request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-request.onreadystatechange = function() {//Call a function when the state changes.
-    if(request.readyState == 4 && request.status == 200) {
-        alert(request.responseText);
-    }
-}
-request.send(formData);
-
-
+// addEvent = (event) => {
+//   event.preventDefault();
+//   axios.post("http://localhost:9292/api/v1/events", {
+    
+//     title: title,
+//     description: description,
+//     start_time: start_time,
+//     end_time: end_time
+//  })
+//  .then(function(response){
+//  this.setState({update: true})
+//   }.bind(this))
+// }
 
 
 // var d = new Date()
@@ -82,3 +99,58 @@ request.send(formData);
 //        + ("0"+d.getSeconds()).slice(-2);
 // }
 
+
+document.getElementById('event-form').addEventListener('submit', performPostRequest);
+
+function performPostRequest(e){
+  const title = document.getElementById('title').value,
+        description = document.getElementById('description').value,
+        start_time = document.getElementById('start_time').value,
+        end_time = document.getElementById('end_time').value;
+  
+        axios({
+          method: 'post',
+          url: 'http://localhost:3001/api/v1/events/',
+          dataType: 'json',
+          data:JSON.stringify( {
+            title: 'title',
+            description: 'description',
+            start_time: 'start_time',
+            end_time: 'end_time'
+          })
+        })
+    .then(function (response) {
+          //handle success
+          console.log(response);
+      })
+      .catch(function (response) {
+          //handle error
+          console.log(response);
+      });
+  e.preventDefault();
+}
+
+// const title = document.getElementById('title').value,
+//         description = document.getElementById('description').value,
+//         start_time = document.getElementById('start_time').value,
+//         end_time = document.getElementById('end_time').value;
+        
+// axios({
+//   method: 'post',
+//   url: 'http://localhost:3001/api/v1/events/',
+//   dataType: 'json',
+//   data:JSON.stringify( {
+//     title: 'title',
+//     description: 'description',
+//     start_time: 'start_time',
+//     end_time: 'end_time'
+//   })
+// })
+//     .then(function (response) {
+//         //handle success
+//         console.log(response);
+//     })
+//     .catch(function (response) {
+//         //handle error
+//         console.log(response);
+//     });
