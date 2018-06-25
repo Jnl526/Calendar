@@ -1,4 +1,6 @@
 const app = document.getElementById('main');
+// Calendar month and year
+
 
 // API Calls
 axios.get('http://localhost:3001/api/v1/events/')
@@ -7,20 +9,23 @@ axios.get('http://localhost:3001/api/v1/events/')
     // console.log(request.status); 
   var data = request.data;
     if (request.status >= 200 && request.status < 400) {
+     
+     
       data.forEach(event => {
-    
         const events = document.getElementById('events'),
-              time = document.getElementById('time') ;
-        
+              time = document.getElementById('time'),
+              tdDAte = document.getElementById('date').textContent; 
+
         const item = document.createElement('li'),
               title = document.createElement('h5'),
               desc = document.createElement('p'),
               span = document.createElement('span');
               
-        let sTime = moment(event.start_time).format('hh:mm A'),
-            eTime = moment(event.end_time).format('hh:mm A'),
-            eDate = moment(event.created_at).format('dddd MM YYYY');
-        
+        let sTime = moment(event.start_time).format('hh:mm a'),
+            eTime = moment(event.end_time).format('hh:mm a'),
+            eDate = moment(event.date).format('dddd, LL'),
+            eventItem = moment(event.date).format('DD');;
+
         item.setAttribute('class', 'list-group-item');
         title.textContent = event.title;
         desc.textContent = event.description;
@@ -29,6 +34,11 @@ axios.get('http://localhost:3001/api/v1/events/')
         const date = document.createElement('em');
         date.textContent = eDate;
         
+        if (eventItem == tdDAte){
+          
+          console.log(tdDAte)
+        }
+
         title.innerHTML+= span.outerHTML;
         item.innerHTML+= title.outerHTML + date.outerHTML + desc.outerHTML;
         events.appendChild(item);  
@@ -100,7 +110,7 @@ axios.get('http://localhost:3001/api/v1/events/')
 // }
 
 
-document.getElementById('event-form').addEventListener('submit', performPostRequest);
+// document.getElementById('event-form').addEventListener('submit', performPostRequest);
 
 function performPostRequest(e){
   const title = document.getElementById('title').value,
@@ -111,13 +121,15 @@ function performPostRequest(e){
         axios({
           method: 'post',
           url: 'http://localhost:3001/api/v1/events/',
-          dataType: 'json',
-          data:JSON.stringify( {
+          data: {
             title: 'title',
             description: 'description',
             start_time: 'start_time',
             end_time: 'end_time'
-          })
+          },
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
         })
     .then(function (response) {
           //handle success
@@ -154,3 +166,66 @@ function performPostRequest(e){
 //         //handle error
 //         console.log(response);
 //     });
+
+
+const header = moment().format('MMMM YYYY');
+const calDate = document.getElementById('cal_date');
+cal_date.textContent = header;
+  
+// Calendar Weekdays
+
+const weekdayArray = moment.weekdays();
+    
+  weekdayArray.forEach(weekday =>{
+    const day = document.getElementById('days');
+    const td = document.createElement('td');
+    td.textContent = weekday;
+    days.appendChild(td);
+  });
+
+
+// Calendar Days-create an array of calendar days and dividing into smaller arrays containing 7 days.
+
+let calDays = [];
+const startDay = moment().clone().startOf('month').startOf('week');
+const endDay = moment().clone().endOf('month').endOf('week');
+let currentDay = moment().format("DD");
+let date = startDay.clone().subtract(1, 'day');
+
+while (date.isBefore(endDay, 'day')) {
+  calDays.push({
+        days: Array(7).fill(0).map(() => date.add(1, 'day').clone().format("DD"))
+    })
+}
+
+// console.log(calendar)
+for (const i in calDays) {
+  let days = calDays[i].days,
+ // Create rows for calendar
+
+      calendar_days = document.getElementById('calendar_days'),
+      tr = document.createElement('tr');
+      
+      // Create cells for calendar days
+
+    for (const j in days) {
+      const td = document.createElement('td');
+      td.setAttribute("id", "date");
+        td.textContent = days[j];
+        tr.appendChild(td);
+        // console.log(cal[j]);
+        if(days[j] == currentDay){
+          td.setAttribute("class", "today");
+        }
+      }
+      calendar_days.appendChild(tr);
+}
+
+
+$('#submit').click(function(){
+  $('.form-hide').hide();
+  
+});
+
+
+

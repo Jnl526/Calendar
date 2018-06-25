@@ -21,23 +21,24 @@ const weekdayArray = moment.weekdays();
 let calDays = [];
 const startDay = moment().clone().startOf('month').startOf('week');
 const endDay = moment().clone().endOf('month').endOf('week');
-
+let currentDay = moment().format("DD");
+console.log(currentDay);
 let date = startDay.clone().subtract(1, 'day');
-
+console.log(date);
 while (date.isBefore(endDay, 'day')) {
   calDays.push({
         days: Array(7).fill(0).map(() => date.add(1, 'day').clone().format("DD"))
     })
 }
+
 // console.log(calendar)
 for (const i in calDays) {
-  const days = calDays[i].days,
-
-      // Create rows for calendar
+  let days = calDays[i].days,
+ // Create rows for calendar
 
       calendar_days = document.getElementById('calendar_days'),
       tr = document.createElement('tr');
-  
+      
       // Create cells for calendar days
 
     for (const j in days) {
@@ -45,10 +46,12 @@ for (const i in calDays) {
         td.textContent = days[j];
         tr.appendChild(td);
         // console.log(cal[j]);
+        if(days[j] == currentDay){
+          td.setAttribute("class", "today");
+        }
       }
       calendar_days.appendChild(tr);
 }
-
 
 
 
