@@ -88,7 +88,6 @@ axios.post('http://localhost:3001/api/v1/events/', {
 }
 
 
-
 $('#submit').click(function(){
   $('.modal').hide();
   
