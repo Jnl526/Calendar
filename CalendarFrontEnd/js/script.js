@@ -87,8 +87,32 @@ axios.post('http://localhost:3001/api/v1/events/', {
 });
 }
 
+// axios.delete(`http://localhost:3001/api/v1/events/${id}`, { 
+//   data: { id: "id" },
+// })
+// .then(function (response) {
+//   console.log(response);
+// })
+// .catch(function (error) {
+//   console.log(error);
+// });
+
 
 $('#submit').click(function(){
   $('.modal').hide();
   
 });
+
+// Delete a user
+var url = "http://localhost:3001/api/v1/events";
+var xhr = new XMLHttpRequest();
+xhr.open("DELETE", url+'/id', true);
+xhr.onload = function () {
+	var users = JSON.parse(xhr.responseText);
+	if (xhr.readyState == 4 && xhr.status == "200") {
+		console.table(events);
+	} else {
+		console.error(events);
+	}
+}
+xhr.send(null);

@@ -89,6 +89,16 @@
     </div><!-- container  -->
   </div> <!-- main -->
   
+
+  <form method="DELETE" action=`http://localhost:3001/api/v1/events/${id}/`>
+  <input type="hidden" id="id" name="_method" value="DELETE">
+  <button class="btn mt-5" value="delete" type="submit" onclick="return confirm('Are you sure you want to delete?')">Delete</button>
+</form>
+
+
+
+  
+
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script
   src="https://code.jquery.com/jquery-3.3.1.slim.js"

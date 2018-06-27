@@ -40,7 +40,7 @@ class Api::V1::EventsController < ApplicationController
       # DELETE /events/1
 
       def destroy
-        event = Event.find(params[:id])
+        @event = Event.find(params[:id])
           @event.destroy
       end
 

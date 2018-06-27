@@ -112,12 +112,12 @@ calendar.prototype.currentMonth = function(){
       }
     }
     
-    // Check for current day in calendar
-    var check = new Date();
-    var checkYear = check.getFullYear();
-    var checkMonth = check.getMonth();
+
+    var today = moment();
+    var tYear = today.year();
+    var tMonth = today.month();
     
-    if (checkYear == this.Year && checkMonth == this.Month && i == this.Day) {
+    if (tYear == this.Year && tMonth == this.Month && i == this.Day) {
       
       html += '<td class="td-widget" data-toggle="modal" data-target="#eventModal">';
       html += '<div>';
