@@ -18,8 +18,9 @@ class Api::V1::EventsController < ApplicationController
 
       def create
         @event = Event.new(event_params)
+        puts event_params
           if @event.save
-            render json: @event, status: :created, location:        api_v1_event_url(@event)
+            render json: @event, status: :created, location: api_v1_event_url(@event)
           else
             render json: @event.errors, status: :unprocessable_entity
           end
@@ -50,7 +51,7 @@ class Api::V1::EventsController < ApplicationController
        end
 
       def event_params
-        params.permit(:title, :description, :start_time, :end_time)
+        params.permit(:title, :description, :date, :start_time, :end_time)
       end
 
     end

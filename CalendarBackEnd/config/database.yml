@@ -23,7 +23,7 @@ default: &default
 
 development:
   <<: *default
-  database: events_api
+  database: events_api_environment
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -80,6 +80,6 @@ test:
 #
 production:
   <<: *default
-  database: events_api
+  database: events_api_environment
   username: events_api
   password: <%= ENV['EVENTS_API_DATABASE_PASSWORD'] %>
