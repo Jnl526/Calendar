@@ -54,7 +54,7 @@
             </div>
             <div class="modal-body">
               <div class ="form-hide">
-                <form id="event-form" method="POST" action="http://localhost:3001/api/v1/events" >
+                <form id="event-form"  method="POST" action="http://localhost:3001/api/v1/events">
                   <div class="form-group">
                     <label for="title">title</label>
                     <input type="text" name="title" class="form-control" id="title" required>
@@ -97,10 +97,12 @@
   
 
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+  <!-- <script
   src="https://code.jquery.com/jquery-3.3.1.slim.js"
   integrity="sha256-fNXJFIlca05BIO2Y5zh1xrShK3ME+/lYZ0j+ChxX2DA="
-  crossorigin="anonymous"></script>
+  crossorigin="anonymous"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

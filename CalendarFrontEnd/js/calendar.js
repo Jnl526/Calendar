@@ -1,4 +1,5 @@
-// Build Calendar App
+// Call API
+
 axios.get('http://localhost:3001/api/v1/events/')
   .then(function(request){
     this.data = request.data
@@ -11,6 +12,8 @@ axios.get('http://localhost:3001/api/v1/events/')
     return 0;
 });
 if (request.status >= 200 && request.status < 400) {
+
+// Create Event List
 
   for (var i = 0; i < this.data.length; i++) {
     var event = this.data[i];
@@ -41,17 +44,20 @@ if (request.status >= 200 && request.status < 400) {
   
   }
   
+  // Build Calendar App
+
   var calendar = function(props){
 
   this.props = props;
 
-  // weekdays in short format
+  // Weekday Array in short format
+
   this.weekdays = moment.weekdaysShort();
 
-  // months
+  // Month Array
   this.months =  moment.months();
 
-  // current month, year and day
+  // Current month, year and day
   var date = moment();
 
   this.Month = date.month();
@@ -61,6 +67,7 @@ if (request.status >= 200 && request.status < 400) {
 // console.log(this.Day)
 
 };
+
 // Show current month
 
 calendar.prototype.currentMonth = function(){
@@ -101,6 +108,7 @@ calendar.prototype.currentMonth = function(){
         }
   // console.log(year, month);
 
+  
 
     // Create calendar grid
    
@@ -137,16 +145,17 @@ calendar.prototype.currentMonth = function(){
     // console.log(request.data); 
     // console.log(request.status); 
   
-  
   var i=1;
         
   do {
     var day = new Date(year, month, i).getDay();
-      
+
     if ( day == 0 ) {
       html += '<tr>';
     }
 
+    // Add days of previous month
+    
     else if ( i == 1 ) {
       html += '<tr>';
       var k = prevDay - firstDay+1;
@@ -169,7 +178,15 @@ calendar.prototype.currentMonth = function(){
       html += '<div>';
       html += '<div class="td-widget-inner">';
       html += '<div class="today day-number" data-toggle="modal" data-target="#eventModal">' + i + '</div>';
-      html += '<div id="event-title"></div>';
+      for(var j = 0; j < data.length; j++) {
+        var event = data[j],
+            edate = moment.utc(event.date).format('DD'),
+            eTime = moment.utc(event.start_time).format('hh:mm a');
+        // console.log(moment(event.date).format('DD'))
+        if (tYear == this.Year && tMonth == this.Month && i == edate){
+          html += '<div class="event-title">'+ eTime + ' '+ event.title +'</div>';
+        }else{"no"}
+      }
       html += '</div>';
       html += '</div>';
       html += '</td>';
@@ -178,6 +195,9 @@ calendar.prototype.currentMonth = function(){
       html += '<div>';
       html += '<div class="td-widget-inner">';
       html += '<div class="day-number" data-toggle="modal" data-target="#eventModal">' + i + '</div>';
+
+      // Add Event Calendar Date
+
       for(var j = 0; j < data.length; j++) {
         var event = data[j],
             edate = moment.utc(event.date).format('DD'),
@@ -216,29 +236,12 @@ calendar.prototype.currentMonth = function(){
   }while(i <= lastDay);
   html += '</tbody>';
   html += '</table>';
-  
  
-
-
-
-
-
   // Call HTML elements
-  
 
   document.getElementById(this.props).innerHTML = html;
 
 };
-
-
-
-// Add Events API Calls
-
-
-
-
-
-
 
 // Create Calendar
   var cal = new calendar("calendar");			
@@ -251,9 +254,11 @@ calendar.prototype.currentMonth = function(){
   var prev = document.getElementById('btnPrev').onclick = function() {
     cal.prevMonth();
   };
+
 } else {
   var errorMessage = document.createElement('error')
   errorMessage.textContent = `It's not working`;
   main.appendChild(errorMessage);
 }
+
 });

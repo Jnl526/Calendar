@@ -8,30 +8,55 @@ function getId(id) {
  // POST
 
 
-var form = document.getElementById('event-form');
-var formData = new FormData(form);
-function submitData(){
-  const title = document.getElementById('title').value,
-        description = document.getElementById('description').value,
-        date = document.getElementById('date').value,
-        start_time = document.getElementById('start_time').value,
-        end_time = document.getElementById('end_time').value;
+// var form = document.getElementById('event-form');
+// var formData = new FormData(form);
+// function submitData(){
+//   const title = document.getElementById('title').value;
+//         description = document.getElementById('description').value,
+//         date = document.getElementById('date').value,
+//         start_time = document.getElementById('start_time').value,
+//         end_time = document.getElementById('end_time').value;
 
-axios.post('http://localhost:3001/api/v1/events/', {
-    title: title,
-    description: description,
-    date: date,
-    start_time: start_time,
-    end_time: end_time
-},
-)
-.then(function (response) {
-  console.log(response);
-})
-.catch(function (error) {
-  console.log(error);
+// axios.post('http://localhost:3001/api/v1/events/', {
+//     title: title,
+//     description: description,
+//     date: date,
+//     start_time: start_time,
+//     end_time: end_time
+// },
+// // event.preventDefault()
+// )
+// .then(function (response) {
+//   console.log(response);
+// })
+// .catch(function (error) {
+//   console.log(error);
+// });
+// }
+
+$(function(){
+  $('#event-form').on('submit', function(e){
+    e.preventDefault();
+    $.ajax({
+      type: 'post',
+      url: 'http://localhost:3001/api/v1/events/',
+      data: $('#event-form').serialize(),
+      success: function(){
+        $('.modal, .modal-backdrop').hide();
+        document.location.reload(true);
+      }
+    });
+    e.preventDefault();
+  });
 });
-}
+
+
+$('#event-form').submit(function (evt){
+  evt.preventDefault();
+  window.history.back();
+});
+
+
 
 // axios.delete('http://localhost:3001/api/v1/events/', { 
 //   params: {
@@ -46,12 +71,12 @@ axios.post('http://localhost:3001/api/v1/events/', {
 // });
 
 
-$('#submit').click(function(){
-  $('.modal').hide();
+// $('#submit').click(function(){
+//   $('.modal').hide();
   
-});
+// });
 
-moment.lang('en', {
+moment.updateLocale('en', {
   meridiem : function (hours, minutes, isLower) {
      if (hours > 11) {
          return isLower ? 'p' : 'P';
