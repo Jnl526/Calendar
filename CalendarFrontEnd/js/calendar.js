@@ -17,6 +17,7 @@ var calendar = function(props){
 // console.log(this.Day)
 };
 
+
 // Show current month
 
 calendar.prototype.currentMonth = function(){
@@ -44,15 +45,6 @@ calendar.prototype.currentMonth = function(){
     }
     this.currentMonth();
   };
-
-  
-
-  // Show month and year
-  // axios.get('http://localhost:3001/api/v1/events/')
-  // .then(function(request){
-  //   var data = request.data;
-  //   console.log(data)
-    
    
   calendar.prototype.month = function (year, month){
     var date = new Date(), 
@@ -89,12 +81,18 @@ calendar.prototype.currentMonth = function(){
 
   // Write the days
   
+  
   var i=1;
       // console.log(day)
-
+      
+       
+        
   do {
     var day = new Date(year, month, i).getDay();
     // If start of week is Sunday, start a new row
+    
+    // eventP();
+      
     if ( day == 0 ) {
       html += '<tr>';
     }
@@ -103,16 +101,18 @@ calendar.prototype.currentMonth = function(){
       html += '<tr>';
       var k = prevDay - firstDay+1;
       for(var j=0; j < firstDay; j++) {
-      html += '<td class="td-widget nc">';
-      html += '<div>';
-      html += '<div class=" day-number">' + k + '</div>';
-      html += '</div>';
-      html += '</td>';
+        html += '<td class="td-widget nc">';
+        html += '<div>';
+        html += '<div class="td-widget-inner">';
+        html += '<div class=" day-number">' + k + '</div>';
+        html += '</div>';
+        html += '</div>';
+        html += '</td>';
         k++;
       }
     }
     
-
+    
     var today = moment();
     var tYear = today.year();
     var tMonth = today.month();
@@ -121,13 +121,17 @@ calendar.prototype.currentMonth = function(){
       
       html += '<td class="td-widget" data-toggle="modal" data-target="#eventModal">';
       html += '<div>';
+      html += '<div class="td-widget-inner">';
       html += '<div class="today day-number" data-toggle="modal" data-target="#eventModal">' + i + '</div>';
+      html += '</div>';
       html += '</div>';
       html += '</td>';
     } else {
       html += '<td class="td-widget" data-toggle="modal" data-target="#eventModal">';
       html += '<div>';
+      html += '<div class="td-widget-inner">';
       html += '<div class="day-number" data-toggle="modal" data-target="#eventModal">' + i + '</div>';
+      html += '</div>';
       html += '</div>';
       html += '</td>';
     }
@@ -141,7 +145,9 @@ calendar.prototype.currentMonth = function(){
       for(day; day < 6; day++) {
       html += '<td class="td-widget nc">';
       html += '<div>';
+      html += '<div class="td-widget-inner">';
       html += '<div class=" day-number">' + k + '</div>';
+      html += '</div>';
       html += '</div>';
       html += '</td>';
         k++;
@@ -156,8 +162,66 @@ calendar.prototype.currentMonth = function(){
   document.getElementById(this.props).innerHTML = html;
 
 };
-// });
-    
+
+var Evnt = function(events){
+  this.events = events;
+// API Calls
+axios.get('http://localhost:3001/api/v1/events/')
+  .then(function(request){
+    // console.log(request.data); 
+    // console.log(request.status); 
+  this.data = request.data
+  this.data.sort(function(a, b) {
+    if (a.date > b.date) {
+        return 1;
+    } else if (a.date < b.date) {
+        return -1;
+    }
+    return 0;
+});
+    if (request.status >= 200 && request.status < 400) {
+      
+      
+
+    // console.log(JSON.stringify(data));
+  for (var i = 0; i < this.data.length; i++) {
+    var event = this.data[i];
+        var events = document.getElementById('events'),
+              time = document.getElementById('time'); 
+             
+        var item = document.createElement('li'),
+              title = document.createElement('h5'),
+              desc = document.createElement('p'),
+              span = document.createElement('span');
+              
+        this.sTime = moment(event.start_time).format('hh:mm a');
+        this.eTime = moment(event.end_time).format('hh:mm a');
+        this.eDate = moment(event.date).format('dddd, LL');
+
+        item.setAttribute('class', 'list-group-item');
+        title.textContent = event.title;
+        desc.textContent = event.description;
+        span.textContent = `${sTime + "-" + eTime}`;
+        
+        var date = document.createElement('em');
+        date.textContent = eDate;
+        
+
+        title.innerHTML+= span.outerHTML;
+        item.innerHTML+= title.outerHTML + date.outerHTML + desc.outerHTML;
+        events.appendChild(item); 
+  
+  }
+      
+    } else {
+        var errorMessage = document.createElement('error')
+        errorMessage.textContent = `It's not working`;
+        main.appendChild(errorMessage);
+    }
+  });
+}
+Evnt ();  
+
 
   var cal = new calendar("calendar");			
   cal.currentMonth();
@@ -167,5 +231,4 @@ calendar.prototype.currentMonth = function(){
   };
   var prev = document.getElementById('btnPrev').onclick = function() {
     cal.prevMonth();
-  }
-
+  };
