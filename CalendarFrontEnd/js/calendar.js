@@ -123,9 +123,11 @@ calendar.prototype.currentMonth = function(){
     html +=  '</th>';
     html += '</tr>';
     html += '</thead>';
-    var today = moment();
-    var tYear = today.year();
-    var tMonth = today.month();
+
+    var today = new Date();
+    var tYear = today.getFullYear();
+    var tMonth = today.getMonth();
+    // console.log(today)
 
     // Write the header of the days of the week
     html += '<tbody>';
@@ -200,10 +202,11 @@ calendar.prototype.currentMonth = function(){
 
       for(var j = 0; j < data.length; j++) {
         var event = data[j],
-            edate = moment.utc(event.date).format('DD'),
+            eMonth = moment.utc(event.date).month(),
+            edate = moment(event.date).date(),
             eTime = moment.utc(event.start_time).format('hh:mm a');
-        // console.log(moment(event.date).format('DD'))
-        if (tYear == this.Year && tMonth == this.Month && i == edate){
+        console.log(edate)
+        if (tYear == this.Year && eMonth == this.Month && i == edate){
           html += '<div class="event-title">'+ eTime + ' '+ event.title +'</div>';
         }else{"no"}
       }
