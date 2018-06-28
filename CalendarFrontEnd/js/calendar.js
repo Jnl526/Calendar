@@ -1,6 +1,47 @@
 // Build Calendar App
+axios.get('http://localhost:3001/api/v1/events/')
+  .then(function(request){
+    this.data = request.data
+  this.data.sort(function(a, b) {
+    if (a.date > b.date) {
+        return 1;
+    } else if (a.date < b.date) {
+        return -1;
+    }
+    return 0;
+});
+if (request.status >= 200 && request.status < 400) {
 
-var calendar = function(props){
+  for (var i = 0; i < this.data.length; i++) {
+    var event = this.data[i];
+        var events = document.getElementById('events'),
+              time = document.getElementById('time'); 
+             
+        var item = document.createElement('li'),
+              title = document.createElement('h5'),
+              desc = document.createElement('p'),
+              span = document.createElement('span');
+              
+        this.sTime = moment.utc(event.start_time).format('hh:mm a');
+        this.eTime = moment.utc(event.end_time).format('hh:mm a');
+        this.eDate = moment.utc(event.date).format('dddd, LL');
+
+        item.setAttribute('class', 'list-group-item');
+        title.textContent = event.title;
+        desc.textContent = event.description;
+        span.textContent = `${sTime + "-" + eTime}`;
+        
+        var date = document.createElement('em');
+        date.textContent = eDate;
+        
+
+        title.innerHTML+= span.outerHTML;
+        item.innerHTML+= title.outerHTML + date.outerHTML + desc.outerHTML;
+        events.appendChild(item); 
+  
+  }
+  
+  var calendar = function(props){
 
   this.props = props;
 
@@ -60,6 +101,7 @@ calendar.prototype.currentMonth = function(){
         }
   // console.log(year, month);
 
+
     // Create calendar grid
    
     var html = '<table class="table table-bordered">';
@@ -92,6 +134,10 @@ calendar.prototype.currentMonth = function(){
 
   // Add days to calendar
   
+    // console.log(request.data); 
+    // console.log(request.status); 
+  
+  
   var i=1;
         
   do {
@@ -119,10 +165,11 @@ calendar.prototype.currentMonth = function(){
   // If current day, highlight
     if (tYear == this.Year && tMonth == this.Month && i == this.Day) {
       
-      html += '<td class="td-widget" data-toggle="modal" data-target="#eventModal">';
+      html += '<td id="td-widget" data-toggle="modal" data-target="#eventModal">';
       html += '<div>';
       html += '<div class="td-widget-inner">';
       html += '<div class="today day-number" data-toggle="modal" data-target="#eventModal">' + i + '</div>';
+      html += '<div id="event-title"></div>';
       html += '</div>';
       html += '</div>';
       html += '</td>';
@@ -131,9 +178,20 @@ calendar.prototype.currentMonth = function(){
       html += '<div>';
       html += '<div class="td-widget-inner">';
       html += '<div class="day-number" data-toggle="modal" data-target="#eventModal">' + i + '</div>';
+      for(var j = 0; j < data.length; j++) {
+        var event = data[j],
+            edate = moment.utc(event.date).format('DD'),
+            eTime = moment.utc(event.start_time).format('hh:mm a');
+        // console.log(moment(event.date).format('DD'))
+        if (tYear == this.Year && tMonth == this.Month && i == edate){
+          html += '<div class="event-title">'+ eTime + ' '+ event.title +'</div>';
+        }else{"no"}
+      }
+      
       html += '</div>';
       html += '</div>';
       html += '</td>';
+      
     }
     
     if ( day == 6 ) {
@@ -158,72 +216,28 @@ calendar.prototype.currentMonth = function(){
   }while(i <= lastDay);
   html += '</tbody>';
   html += '</table>';
+  
+ 
+
+
+
+
 
   // Call HTML elements
+  
+
   document.getElementById(this.props).innerHTML = html;
 
 };
 
+
+
 // Add Events API Calls
 
-var Evnt = function(events){
-  this.events = events;
 
-axios.get('http://localhost:3001/api/v1/events/')
-  .then(function(request){
-    // console.log(request.data); 
-    // console.log(request.status); 
-  this.data = request.data
-  this.data.sort(function(a, b) {
-    if (a.date > b.date) {
-        return 1;
-    } else if (a.date < b.date) {
-        return -1;
-    }
-    return 0;
-});
-    if (request.status >= 200 && request.status < 400) {
-      
-      
 
-    // console.log(JSON.stringify(data));
-  for (var i = 0; i < this.data.length; i++) {
-    var event = this.data[i];
-        var events = document.getElementById('events'),
-              time = document.getElementById('time'); 
-             
-        var item = document.createElement('li'),
-              title = document.createElement('h5'),
-              desc = document.createElement('p'),
-              span = document.createElement('span');
-              
-        this.sTime = moment(event.start_time).format('hh:mm a');
-        this.eTime = moment(event.end_time).format('hh:mm a');
-        this.eDate = moment(event.date).format('dddd, LL');
 
-        item.setAttribute('class', 'list-group-item');
-        title.textContent = event.title;
-        desc.textContent = event.description;
-        span.textContent = `${sTime + "-" + eTime}`;
-        
-        var date = document.createElement('em');
-        date.textContent = eDate;
-        
 
-        title.innerHTML+= span.outerHTML;
-        item.innerHTML+= title.outerHTML + date.outerHTML + desc.outerHTML;
-        events.appendChild(item); 
-  
-  }
-      
-    } else {
-        var errorMessage = document.createElement('error')
-        errorMessage.textContent = `It's not working`;
-        main.appendChild(errorMessage);
-    }
-  });
-}
-Evnt ();  
 
 
 // Create Calendar
@@ -237,3 +251,9 @@ Evnt ();
   var prev = document.getElementById('btnPrev').onclick = function() {
     cal.prevMonth();
   };
+} else {
+  var errorMessage = document.createElement('error')
+  errorMessage.textContent = `It's not working`;
+  main.appendChild(errorMessage);
+}
+});

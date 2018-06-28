@@ -2,7 +2,9 @@ const app = document.getElementById('main');
 // Calendar month and year
 
   // Get element by id
-
+function getId(id) {
+  return document.getElementById(id);
+}
  // POST
 
 
@@ -49,12 +51,12 @@ $('#submit').click(function(){
   
 });
 
-moment.updateLocale('en', {
-  meridiem: function (hours, minutes, isLower) {
-      if (hours > 11) {
-          return isLower ? 'p' : 'P';
-      } else {
-          return isLower ? 'a' : 'A';
-      }
-  }
+moment.lang('en', {
+  meridiem : function (hours, minutes, isLower) {
+     if (hours > 11) {
+         return isLower ? 'p' : 'P';
+     } else {
+         return isLower ? 'a' : 'A';
+     }
+ }
 });
