@@ -1,3 +1,5 @@
+// Build Calendar App
+
 var calendar = function(props){
 
   this.props = props;
@@ -18,15 +20,13 @@ var calendar = function(props){
 // console.log(this.Day)
 
 };
-
-
 // Show current month
 
 calendar.prototype.currentMonth = function(){
   this.month(this.Year, this.Month);
 };
 
-  // Show next month
+  // Next month
   calendar.prototype.nextMonth = function(){
     if (this.Month == 11) {
       this.Month = 0;
@@ -37,7 +37,7 @@ calendar.prototype.currentMonth = function(){
     this.currentMonth();
   };
 
-  // Show previous month
+  // Previous month
   calendar.prototype.prevMonth = function(){
     if (this.Month == 0) {
       this.Month = 11;
@@ -65,6 +65,7 @@ calendar.prototype.currentMonth = function(){
     var html = '<table class="table table-bordered">';
 
     // Month and year header
+
     html += '<thead>';
     html += '<tr>';
     html += '<th id="month" colspan="7">';
@@ -75,6 +76,7 @@ calendar.prototype.currentMonth = function(){
     var today = moment();
     var tYear = today.year();
     var tMonth = today.month();
+
     // Write the header of the days of the week
     html += '<tbody>';
     html += '<tr class="days text-center">';
@@ -88,24 +90,17 @@ calendar.prototype.currentMonth = function(){
   } 
     html += '</tr>';
 
-  // Write the days
-  
+  // Add days to calendar
   
   var i=1;
-      // console.log(day)
-      
-       
         
   do {
     var day = new Date(year, month, i).getDay();
-    // If start of week is Sunday, start a new row
-    
-    // eventP();
       
     if ( day == 0 ) {
       html += '<tr>';
     }
-    // Week starts on Sunday
+
     else if ( i == 1 ) {
       html += '<tr>';
       var k = prevDay - firstDay+1;
@@ -121,9 +116,7 @@ calendar.prototype.currentMonth = function(){
       }
     }
     
-    
-    
-    
+  // If current day, highlight
     if (tYear == this.Year && tMonth == this.Month && i == this.Day) {
       
       html += '<td class="td-widget" data-toggle="modal" data-target="#eventModal">';
@@ -166,13 +159,16 @@ calendar.prototype.currentMonth = function(){
   html += '</tbody>';
   html += '</table>';
 
+  // Call HTML elements
   document.getElementById(this.props).innerHTML = html;
 
 };
 
+// Add Events API Calls
+
 var Evnt = function(events){
   this.events = events;
-// API Calls
+
 axios.get('http://localhost:3001/api/v1/events/')
   .then(function(request){
     // console.log(request.data); 
@@ -230,9 +226,11 @@ axios.get('http://localhost:3001/api/v1/events/')
 Evnt ();  
 
 
+// Create Calendar
   var cal = new calendar("calendar");			
   cal.currentMonth();
   
+// Prev and Next buttons
   var next = document.getElementById('btnNext').onclick = function() {
     cal.nextMonth();
   };
