@@ -1,6 +1,6 @@
 // Call API
 
-axios.get('https://jb-calendar-api.herokuapp.com/api/v1/events')
+axios.get('http://localhost:3001/api/v1/events')
   .then(function(request){
     this.data = request.data
   this.data.sort(function(a, b) {
