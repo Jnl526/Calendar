@@ -39,7 +39,7 @@ $(function(){
     e.preventDefault();
     $.ajax({
       type: 'post',
-      url: 'http://localhost:3001/api/v1/events/',
+      url: 'https://jb-calendar-api.herokuapp.com/api/v1/events',
       data: $('#event-form').serialize(),
       success: function(){
         $('.modal, .modal-backdrop').hide();
@@ -70,12 +70,17 @@ $('#event-form').submit(function (evt){
 //   console.log(error);
 // });
 
+// add default values to input types date and time
 
-// $('#submit').click(function(){
-//   $('.modal').hide();
-  
-// });
+    var now = moment().format("HH:mm");        
+    $("input[type=time]").val(now);
 
+    var date = moment().format('YYYY-MM-DD');
+    console.log(date)
+    $("input[type=date]").val(date);
+
+
+// convert AM/PM to A/P
 moment.updateLocale('en', {
   meridiem : function (hours, minutes, isLower) {
      if (hours > 11) {

@@ -17,10 +17,10 @@ em{
 #calendar_days .td-widget{
   padding: 0 5px;
 }
-.td-widget .event-title{
+.td-widget .event-title {
   font-size: 10px;
   color: #00BCD4;
-  float: left;
+  padding-bottom: 5px;
 }
 .td-widget .td-widget-inner{
   min-height: 105px;

@@ -1,6 +1,6 @@
 // Call API
 
-axios.get('http://localhost:3001/api/v1/events/')
+axios.get('https://jb-calendar-api.herokuapp.com/api/v1/events')
   .then(function(request){
     this.data = request.data
   this.data.sort(function(a, b) {
@@ -176,10 +176,10 @@ calendar.prototype.currentMonth = function(){
   // If current day, highlight
     if (tYear == this.Year && tMonth == this.Month && i == this.Day) {
       
-      html += '<td id="td-widget" data-toggle="modal" data-target="#eventModal">';
+      html += '<td class="td-widget modal-toggle" data-toggle="modal" data-target="#eventModal">';
       html += '<div>';
       html += '<div class="td-widget-inner">';
-      html += '<div class="today day-number" data-toggle="modal" data-target="#eventModal">' + i + '</div>';
+      html += '<div class="today day-number" >' + i + '</div>';
       for(var j = 0; j < data.length; j++) {
         var event = data[j],
             edate = moment.utc(event.date).format('DD'),
@@ -193,10 +193,10 @@ calendar.prototype.currentMonth = function(){
       html += '</div>';
       html += '</td>';
     } else {
-      html += '<td class="td-widget" data-toggle="modal" data-target="#eventModal">';
+      html += '<td class="td-widget modal-toggle" data-toggle="modal" data-target="#eventModal">';
       html += '<div>';
       html += '<div class="td-widget-inner">';
-      html += '<div class="day-number" data-toggle="modal" data-target="#eventModal">' + i + '</div>';
+      html += '<div class="day-number" >' + i + '</div>';
 
       // Add Event Calendar Date
 
@@ -205,7 +205,7 @@ calendar.prototype.currentMonth = function(){
             eMonth = moment.utc(event.date).month(),
             edate = moment(event.date).date(),
             eTime = moment.utc(event.start_time).format('hh:mm a');
-        console.log(edate)
+        // console.log(edate)
         if (tYear == this.Year && eMonth == this.Month && i == edate){
           html += '<div class="event-title">'+ eTime + ' '+ event.title +'</div>';
         }else{"no"}
