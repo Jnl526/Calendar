@@ -93,8 +93,8 @@ calendar.prototype.currentMonth = function(){
       // console.log(day)
 
   do {
-    var day = moment([year, month, i]).day();
-    
+    var day = new Date(year, month, i).getDay();
+    // If start of week is Sunday, start a new row
     if ( day == 0 ) {
       html += '<tr>';
     }
