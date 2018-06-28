@@ -48,3 +48,13 @@ $('#submit').click(function(){
   $('.modal').hide();
   
 });
+
+moment.updateLocale('en', {
+  meridiem: function (hours, minutes, isLower) {
+      if (hours > 11) {
+          return isLower ? 'p' : 'P';
+      } else {
+          return isLower ? 'a' : 'A';
+      }
+  }
+});

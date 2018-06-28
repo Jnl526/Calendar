@@ -1,4 +1,6 @@
-
+em{
+  font-size: 13px;
+}
 .section{
   padding-top: 3em;
 }
@@ -48,9 +50,12 @@
   background-color: #007bff;
   color: #FFFFFF;
 }
+.list-group-item h5 {
+  font-size: 16px;
+}
 .list-group-item span {
   padding-left: 15px;
-  font-size: 15px;
+  font-size: 13px;
 }
 .nc{
   color: #d2d2d2;
