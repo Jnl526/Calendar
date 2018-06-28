@@ -44,6 +44,10 @@
   color: #FFFFFF;
   border-radius: 50%;
 }
+.weekday{
+  background-color: #007bff;
+  color: #FFFFFF;
+}
 .list-group-item span {
   padding-left: 15px;
   font-size: 15px;

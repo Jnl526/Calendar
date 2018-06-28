@@ -14,7 +14,9 @@ var calendar = function(props){
   this.Month = date.month();
   this.Year = date.year();
   this.Day = date.date();
+  this.WeekDay = date.weekday();
 // console.log(this.Day)
+
 };
 
 
@@ -70,13 +72,20 @@ calendar.prototype.currentMonth = function(){
     html +=  '</th>';
     html += '</tr>';
     html += '</thead>';
-
+    var today = moment();
+    var tYear = today.year();
+    var tMonth = today.month();
     // Write the header of the days of the week
     html += '<tbody>';
-    html += '<tr class="days">';
+    html += '<tr class="days text-center">';
+    
     for(var i=0; i < this.weekdays.length;i++) {
-      html += '<td>' + this.weekdays[i] + '</td>';
+      if (tYear == this.Year && tMonth == this.Month && i == this.WeekDay) {
+      html += '<td class="weekday">' + this.weekdays[i] + '</td>';
+    }else{
+      html += '<td >' + this.weekdays[i] + '</td>';
     }
+  } 
     html += '</tr>';
 
   // Write the days
@@ -113,9 +122,7 @@ calendar.prototype.currentMonth = function(){
     }
     
     
-    var today = moment();
-    var tYear = today.year();
-    var tMonth = today.month();
+    
     
     if (tYear == this.Year && tMonth == this.Month && i == this.Day) {
       
