@@ -1,6 +1,6 @@
 // Call API
 
-axios.get('http://localhost:3001/api/v1/events')
+axios.get('https://clndr-api.herokuapp.com/api/v1/events')
   .then(function(request){
     this.data = request.data
   this.data.sort(function(a, b) {

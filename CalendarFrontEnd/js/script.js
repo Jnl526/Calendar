@@ -39,7 +39,7 @@ $(function(){
     e.preventDefault();
     $.ajax({
       type: 'post',
-      url: 'http://localhost:3001/api/v1/events',
+      url: 'https://clndr-api.herokuapp.com/api/v1/events',
       data: $('#event-form').serialize(),
       success: function(){
         $('.modal, .modal-backdrop').hide();
